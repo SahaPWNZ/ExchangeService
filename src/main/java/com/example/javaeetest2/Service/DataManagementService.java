@@ -7,13 +7,19 @@ import com.example.javaeetest2.DTO.CurrencyResponseDTO;
 import com.example.javaeetest2.DTO.ExchangeRateRequestDTO;
 import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;
 import com.example.javaeetest2.Exceptions.NotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class DataManagementService {
     private static final CurrenciesDAO curDAO = new CurrenciesDAO();
     public static final ExchangeRatesDAO ratesDAO = new ExchangeRatesDAO();
     private final ValidationService validationService = new ValidationService();
+
+    public ExchangeRateRequestDTO getDtoByRequest(HttpServletRequest req) {
+        return new ExchangeRateRequestDTO(req.getParameter("baseCurrencyCode"), req.getParameter("targetCurrencyCode"), new BigDecimal(req.getParameter("rate")));
+    }
 
     public static CurrencyResponseDTO getCurrencyOnCode(String code) {
         return curDAO.getCurrencyOnCode(code).orElseThrow(() ->
@@ -41,9 +47,13 @@ public class DataManagementService {
         return ratesDAO.updateRate(requestDTO);
     }
 
-    public ArrayList<ExchangeRateResponseDTO>
-//
-//    public static ExchangeRateResponseDTO insertExchangeRate(ExchangeRateRequestDTO requestDTO) {
-//        return ratesDAO.insertExchangeRate(requestDTO).orElseThrow();
-//    }
+    public ArrayList<ExchangeRateResponseDTO> getExchangeRatesList() {
+        return ratesDAO.getAllExchangeRates();
+    }
+
+    public ExchangeRateResponseDTO insertExchangeRate(ExchangeRateRequestDTO requestDTO) {
+        validationService.checkCurrenciesByCodes(requestDTO.getBaseCode(), requestDTO.getTargetCode());
+        validationService.checkExchangeRate(requestDTO.getBaseCode(), requestDTO.getTargetCode());
+        return ratesDAO.insertExchangeRate(requestDTO).orElseThrow();
+    }
 }

@@ -29,8 +29,6 @@ public class ExchangeServlet extends HttpServlet {
         ExchangeRateWithAmountRequestDTO requestDTO =
                 new ExchangeRateWithAmountRequestDTO(req.getParameter("from"), req.getParameter("to"), new BigDecimal(req.getParameter("amount")));
 
-
-
         ExchangeService service = new ExchangeService(requestDTO);
         ExchangeRateWithAmountResponceDTO respDTO = service.Exchange();
         writer.println(objectMapper.writeValueAsString(respDTO));

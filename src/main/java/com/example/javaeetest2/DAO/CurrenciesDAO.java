@@ -103,7 +103,7 @@ public class CurrenciesDAO {
         }
     }
 
-    public static int getCurrencyIdOnCode(String code) {
+    public int getCurrencyIdOnCode(String code) {
         try (var conn = ConnectionManager.open();
              PreparedStatement preparedStatement = conn.prepareStatement(SELECT_CURRENCY_ON_CODE);
         ) {

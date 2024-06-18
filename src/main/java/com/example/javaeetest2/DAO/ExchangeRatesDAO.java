@@ -5,6 +5,8 @@ import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;;
 import com.example.javaeetest2.Exceptions.CastomSQLException;
 import com.example.javaeetest2.Exceptions.InvalidDataException;
 import com.example.javaeetest2.Utils.ConnectionManager;
+import com.sun.net.httpserver.Request;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -64,20 +66,21 @@ public class ExchangeRatesDAO {
         }
     }
 
-//    public Optional<ExchangeRateResponseDTO> insertExchangeRate(ExchangeRateRequestDTO exchangeRateRequestDTO) {
-//        try (var conn = ConnectionManager.open();
-//             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_EXCHANGE_RATE)) {
-//            preparedStatement.setBigDecimal(1, exchangeRateRequestDTO.getRate());
-//            preparedStatement.setInt(2, exchangeRateRequestDTO.getCurBaseDTO().getId());
-//            preparedStatement.setInt(3, exchangeRateRequestDTO.getCurTargetDTO().getId());
-//            preparedStatement.executeUpdate();
-//            return getExchangeRateOnCodes(exchangeRateRequestDTO.getCurBaseDTO().getCode(),
-//                    exchangeRateRequestDTO.getCurTargetDTO().getCode());
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//            throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
-//        }
-//    }
+    public Optional<ExchangeRateResponseDTO> insertExchangeRate(ExchangeRateRequestDTO exchangeRateRequestDTO) {
+        try (var conn = ConnectionManager.open();
+             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_EXCHANGE_RATE)) {
+
+            preparedStatement.setBigDecimal(1, exchangeRateRequestDTO.getRate());
+            preparedStatement.setInt(2, curDAO.getCurrencyIdOnCode(exchangeRateRequestDTO.getBaseCode()));
+            preparedStatement.setInt(3, curDAO.getCurrencyIdOnCode(exchangeRateRequestDTO.getTargetCode()));
+            preparedStatement.executeUpdate();
+            return getExchangeRateOnCodes(exchangeRateRequestDTO.getBaseCode(),
+                    exchangeRateRequestDTO.getTargetCode());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
+        }
+    }
 
     public ExchangeRateResponseDTO updateRate(ExchangeRateRequestDTO exchangeRateRequestDTO) {
         try (var conn = ConnectionManager.open();
