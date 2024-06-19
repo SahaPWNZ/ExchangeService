@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 
 @WebServlet (value = "/exchange")
-public class ExchangeServlet extends baseExchangeServlet {
+public class ExchangeServlet extends BaseExchangeServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");

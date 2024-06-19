@@ -13,9 +13,10 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 
 @WebServlet(value = "/exchangeRates")
-public class ExchangeRatesServlet extends baseExchangeServlet {
+public class ExchangeRatesServlet extends BaseExchangeServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         try{
             String json = objectMapper.writeValueAsString(dataService.getExchangeRatesList());
@@ -28,7 +29,7 @@ public class ExchangeRatesServlet extends baseExchangeServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         try {

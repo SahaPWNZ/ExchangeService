@@ -37,7 +37,7 @@ public class ExchangeService {
     }
 
     private ExchangeRateWithAmountResponceDTO getResponceDTOonRate() {
-        BigDecimal convertedAmount = amount.multiply(exchangeRatesDAO.getRateOnCodes(baseCurrencyCode, targetCurrencyCode));
+        BigDecimal convertedAmount = amount.multiply(exchangeRatesDAO.getRateOnCodes(baseCurrencyCode, targetCurrencyCode)).setScale(2, RoundingMode.HALF_UP);
         ExchangeRateResponseDTO exchangeRateResponseDTO = exchangeRatesDAO.getExchangeRateOnCodes(baseCurrencyCode, targetCurrencyCode).orElseThrow();
         return new ExchangeRateWithAmountResponceDTO(
                 exchangeRateResponseDTO.getCurrencyBase(),
@@ -48,7 +48,7 @@ public class ExchangeService {
     }
 
     private ExchangeRateWithAmountResponceDTO getResponceDTOonBackRate() {
-        BigDecimal convertedAmount = amount.divide(exchangeRatesDAO.getRateOnCodes(targetCurrencyCode, baseCurrencyCode), 3, RoundingMode.HALF_UP);
+        BigDecimal convertedAmount = amount.divide(exchangeRatesDAO.getRateOnCodes(targetCurrencyCode, baseCurrencyCode), 2, RoundingMode.HALF_UP);
         return new ExchangeRateWithAmountResponceDTO(
                 curDAO.getCurrencyOnCode(baseCurrencyCode).get(),
                 curDAO.getCurrencyOnCode(targetCurrencyCode).get(),
@@ -60,8 +60,8 @@ public class ExchangeService {
     public ExchangeRateWithAmountResponceDTO getResponceDTOonUSDRate() {
         BigDecimal rateBaseOnTarget =
                 exchangeRatesDAO.getRateOnCodes("USD", targetCurrencyCode)
-                        .divide(exchangeRatesDAO.getRateOnCodes("USD", baseCurrencyCode), 3, RoundingMode.HALF_UP);
-        BigDecimal convertedAmount = amount.multiply(rateBaseOnTarget);
+                        .divide(exchangeRatesDAO.getRateOnCodes("USD", baseCurrencyCode), 2, RoundingMode.HALF_UP);
+        BigDecimal convertedAmount = amount.multiply(rateBaseOnTarget).setScale(2, RoundingMode.HALF_UP);
         return new ExchangeRateWithAmountResponceDTO(
                 curDAO.getCurrencyOnCode(baseCurrencyCode).get(),
                 curDAO.getCurrencyOnCode(targetCurrencyCode).get(),

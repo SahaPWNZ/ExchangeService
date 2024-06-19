@@ -3,6 +3,7 @@ package com.example.javaeetest2.DAO;
 import com.example.javaeetest2.DTO.ExchangeRateRequestDTO;
 import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;;
 import com.example.javaeetest2.Exceptions.CastomSQLException;
+import com.example.javaeetest2.Exceptions.ConflictException;
 import com.example.javaeetest2.Exceptions.InvalidDataException;
 import com.example.javaeetest2.Utils.ConnectionManager;
 
@@ -17,12 +18,16 @@ public class ExchangeRatesDAO {
     private static final String SELECT_ALL_EXCHANGE_RATES = "SELECT * FROM ExchangeRates";
     private static final String SELECT_EXCHANGE_RATE_ON_CODES = "SELECT * FROM ExchangeRates " +
             "WHERE BaseCurrencyid = (SELECT id FROM Currencies WHERE Code = ?) " +
-            "AND TargetCurrencyid = (select id FROM Currencies WHERE Code = ?)";
+            "AND TargetCurrencyid = (SELECT id FROM Currencies WHERE Code = ?)";
     private static final String INSERT_EXCHANGE_RATE = "INSERT INTO ExchangeRates   (Rate, BaseCurrencyId, TargetCurrencyId) VALUES (?,?,?)";
 
     private static final String UPDATE_EXCHANGE_RATE = "UPDATE ExchangeRates SET Rate = ? " +
             "WHERE BaseCurrencyId = (SELECT id FROM Currencies WHERE Code = ?) " +
-            "AND TargetCurrencyId = (select id FROM Currencies WHERE Code = ?)";
+            "AND TargetCurrencyId = (SELECT id FROM Currencies WHERE Code = ?)";
+
+    private static final String GET_RATE_BY_CODE = "SELECT * FROM ExchangeRates " +
+            "WHERE BaseCurrencyid = (SELECT id FROM Currencies WHERE Code = ?)" +
+            "AND TargetCurrencyid = (SELECT id FROM Currencies WHERE Code = ?) ";
     private static final CurrenciesDAO curDAO = new CurrenciesDAO();
 
     private ExchangeRateResponseDTO getDtoByResulSet(ResultSet resultSet) throws SQLException {
@@ -75,8 +80,13 @@ public class ExchangeRatesDAO {
             return getExchangeRateOnCodes(exchangeRateRequestDTO.getBaseCode(),
                     exchangeRateRequestDTO.getTargetCode());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
+            if (e.getErrorCode() == 19){
+               throw new ConflictException("Введённый курс валют уже есть в БД!");
+            }
+            else {
+                System.out.println(e.getMessage());
+                throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
+            }
         }
     }
 
@@ -98,11 +108,7 @@ public class ExchangeRatesDAO {
 
     public BigDecimal getRateOnCodes(String baseCurrencyCode, String targetCurrencyCode) {
         try (var conn = ConnectionManager.open();
-             PreparedStatement preparedStatement = conn.prepareStatement(
-                     "select * from ExchangeRates " +
-                             "where BaseCurrencyid = (select id FROM Currencies WHERE Code = ?)" +
-                             "AND TargetCurrencyid = (select id FROM Currencies WHERE Code = ?) ")) {
-
+             PreparedStatement preparedStatement = conn.prepareStatement(GET_RATE_BY_CODE)) {
             preparedStatement.setString(1, baseCurrencyCode);
             preparedStatement.setString(2, targetCurrencyCode);
             ResultSet resultSet = preparedStatement.executeQuery();

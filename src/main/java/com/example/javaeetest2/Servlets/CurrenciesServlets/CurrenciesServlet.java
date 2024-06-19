@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/currencies")
-public class CurrenciesServlet extends baseCurrencyServlet {
+public class CurrenciesServlet extends BaseCurrencyServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");

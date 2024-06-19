@@ -8,7 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 
 @WebServlet
-public abstract class baseCurrencyServlet extends HttpServlet {
+public abstract class BaseCurrencyServlet extends HttpServlet {
     static final  ObjectMapper objectMapper = new ObjectMapper();
     final  DataManagementService dataService = new DataManagementService();
     final  ValidationService validationService = new ValidationService();

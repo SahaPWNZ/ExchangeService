@@ -31,7 +31,6 @@ public class DataManagementService {
     }
 
     public CurrencyResponseDTO insertCurrency(CurrencyRequestDTO curDTO) {
-        validationService.checkCurrencyByCode(curDTO.getCode());
         return curDAO.insertCurrency(curDTO).orElseThrow();
     }
 
@@ -53,12 +52,6 @@ public class DataManagementService {
 
     public ExchangeRateResponseDTO insertExchangeRate(ExchangeRateRequestDTO requestDTO) {
         validationService.checkCurrenciesByCodes(requestDTO.getBaseCode(), requestDTO.getTargetCode());
-        if(validationService.isExchangeRateInDB(requestDTO.getBaseCode(), requestDTO.getTargetCode())){
-            throw new ConflictException("Для данных валют уже есть обменный курс в БД");
-        }
-        else {
             return ratesDAO.insertExchangeRate(requestDTO).orElseThrow();
-        }
-
     }
 }

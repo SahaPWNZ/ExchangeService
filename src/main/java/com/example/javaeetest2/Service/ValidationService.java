@@ -31,12 +31,6 @@ public class ValidationService {
         }
     }
 
-    public void checkCurrencyByCode(String code) {
-        if (curDAO.getCurrencyOnCode(code).orElse(null) != null) {
-            throw new ConflictException("Данная валюта уже есть в базе");
-        }
-    }
-
     public void checkCurrenciesByCodes(String baseCode, String targetCode){
         curDAO.getCurrencyOnCode(baseCode).orElseThrow(() -> new NotFoundException("Одного из курса валют нет"));
         curDAO.getCurrencyOnCode(targetCode).orElseThrow(() -> new NotFoundException("Одного из курса валют нет"));

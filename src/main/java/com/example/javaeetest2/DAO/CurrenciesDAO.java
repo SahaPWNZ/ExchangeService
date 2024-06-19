@@ -3,7 +3,9 @@ package com.example.javaeetest2.DAO;
 import com.example.javaeetest2.DTO.CurrencyRequestDTO;
 import com.example.javaeetest2.DTO.CurrencyResponseDTO;
 import com.example.javaeetest2.Exceptions.CastomSQLException;
+import com.example.javaeetest2.Exceptions.ConflictException;
 import com.example.javaeetest2.Utils.ConnectionManager;
+import org.sqlite.SQLiteException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,8 +73,12 @@ public class CurrenciesDAO {
             return getCurrencyOnCode(curDTO.getCode());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
-        }
+            if (e.getErrorCode() == 19){
+                throw new ConflictException("Валюта с заданным кодом уже есть в БД");
+            }
+            else {
+                throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
+            }}
     }
 
 

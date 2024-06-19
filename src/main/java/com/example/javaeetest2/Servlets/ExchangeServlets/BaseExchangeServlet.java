@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.servlet.http.HttpServlet;
 
-public abstract class baseExchangeServlet extends HttpServlet {
+public abstract class BaseExchangeServlet extends HttpServlet {
     static final ObjectMapper objectMapper = new ObjectMapper();
     final DataManagementService dataService = new DataManagementService();
     final ValidationService validationService = new ValidationService();
