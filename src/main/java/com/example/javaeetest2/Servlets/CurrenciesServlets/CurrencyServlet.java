@@ -2,9 +2,6 @@ package com.example.javaeetest2.Servlets.CurrenciesServlets;
 
 import com.example.javaeetest2.DTO.ErrorResponseDTO;
 import com.example.javaeetest2.Exceptions.CastomException;
-import com.example.javaeetest2.Exceptions.InvalidDataException;
-import com.example.javaeetest2.Service.DataManagementService;
-import com.example.javaeetest2.Service.ValidationService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet(value = "/currency/*")
-public class CurrencyServlet extends CurrencyBaseServlet {
+public class CurrencyServlet extends baseCurrencyServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

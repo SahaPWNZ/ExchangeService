@@ -5,8 +5,6 @@ import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;;
 import com.example.javaeetest2.Exceptions.CastomSQLException;
 import com.example.javaeetest2.Exceptions.InvalidDataException;
 import com.example.javaeetest2.Utils.ConnectionManager;
-import com.sun.net.httpserver.Request;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -71,8 +69,8 @@ public class ExchangeRatesDAO {
              PreparedStatement preparedStatement = conn.prepareStatement(INSERT_EXCHANGE_RATE)) {
 
             preparedStatement.setBigDecimal(1, exchangeRateRequestDTO.getRate());
-            preparedStatement.setInt(2, curDAO.getCurrencyIdOnCode(exchangeRateRequestDTO.getBaseCode()));
-            preparedStatement.setInt(3, curDAO.getCurrencyIdOnCode(exchangeRateRequestDTO.getTargetCode()));
+            preparedStatement.setInt(2, curDAO.getCurrencyIdByCode(exchangeRateRequestDTO.getBaseCode()));
+            preparedStatement.setInt(3, curDAO.getCurrencyIdByCode(exchangeRateRequestDTO.getTargetCode()));
             preparedStatement.executeUpdate();
             return getExchangeRateOnCodes(exchangeRateRequestDTO.getBaseCode(),
                     exchangeRateRequestDTO.getTargetCode());
@@ -97,21 +95,6 @@ public class ExchangeRatesDAO {
         }
     }
 
-    public boolean isExchangeRateOnCodes(String baseCurrencyCode, String targetCurrencyCode) {
-        try (var conn = ConnectionManager.open();
-             PreparedStatement preparedStatement = conn.prepareStatement(
-                     "select * from ExchangeRates " +
-                             "where BaseCurrencyid = (select id FROM Currencies WHERE Code = ?)" +
-                             "AND TargetCurrencyid = (select id FROM Currencies WHERE Code = ?) ")) {
-
-            preparedStatement.setString(1, baseCurrencyCode);
-            preparedStatement.setString(2, targetCurrencyCode);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public BigDecimal getRateOnCodes(String baseCurrencyCode, String targetCurrencyCode) {
         try (var conn = ConnectionManager.open();
@@ -125,7 +108,8 @@ public class ExchangeRatesDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.getBigDecimal("rate");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
         }
     }
 

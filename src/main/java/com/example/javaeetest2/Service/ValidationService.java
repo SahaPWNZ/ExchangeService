@@ -3,7 +3,6 @@ package com.example.javaeetest2.Service;
 import com.example.javaeetest2.DAO.CurrenciesDAO;
 import com.example.javaeetest2.DAO.ExchangeRatesDAO;
 import com.example.javaeetest2.DTO.CurrencyRequestDTO;
-import com.example.javaeetest2.DTO.ExchangeRateRequestDTO;
 import com.example.javaeetest2.Exceptions.ConflictException;
 import com.example.javaeetest2.Exceptions.InvalidDataException;
 import com.example.javaeetest2.Exceptions.NotFoundException;
@@ -11,8 +10,8 @@ import com.example.javaeetest2.Exceptions.NotFoundException;
 import java.math.BigDecimal;
 
 public class ValidationService {
-    private static final CurrenciesDAO curDAO = new CurrenciesDAO();
-    private static final ExchangeRatesDAO ratesDAO = new ExchangeRatesDAO();
+    private final CurrenciesDAO curDAO = new CurrenciesDAO();
+    private final ExchangeRatesDAO ratesDAO = new ExchangeRatesDAO();
 
     public void isValidCode(String code) {
         if (code.length() != 3) {
@@ -63,10 +62,8 @@ public class ValidationService {
             throw new InvalidDataException("Неверное поле формы");
         }
     }
-    public void checkExchangeRate(String baseCode, String targetCode){
-        if(ratesDAO.getExchangeRateOnCodes(baseCode, targetCode).orElse(null)!= null){
-            throw new ConflictException("Данная валюта уже есть в базе");
-        }
+    public boolean isExchangeRateInDB(String baseCode, String targetCode){
+        return ratesDAO.getExchangeRateOnCodes(baseCode, targetCode).orElse(null) != null;
     }
 
 

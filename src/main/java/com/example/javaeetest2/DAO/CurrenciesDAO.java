@@ -17,6 +17,7 @@ public class CurrenciesDAO {
     private static final String INSERT_CURRENCY = "INSERT INTO Currencies   (Code, FullName, Sign) VALUES (?,?,?)";
     private static final String SELECT_CURRENCY_ON_CODE = "SELECT * FROM Currencies WHERE Code = ?";
     private static final String SELECT_CURRENCY_ON_ID = "SELECT * FROM Currencies WHERE Id = ?";
+
     private CurrencyResponseDTO getDtoByResultSet(ResultSet resultSet) throws SQLException {
         return new CurrencyResponseDTO(
                 resultSet.getInt("id"),
@@ -74,17 +75,6 @@ public class CurrenciesDAO {
         }
     }
 
-    public void deliteCurrencyOnCode(String code) throws SQLException {
-        try (var conn = ConnectionManager.open();
-             PreparedStatement preparedStatement = conn.prepareStatement(
-                     "DELETE from Currencies where Code = ? ");) {
-            preparedStatement.setString(1, code);
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            System.out.println("Ошибка при выполнении запроса");
-            System.out.println(e.getMessage());
-        }
-    }
 
     public Optional<CurrencyResponseDTO> getCurrencyOnId(int id) {
         try (var conn = ConnectionManager.open();
@@ -103,7 +93,7 @@ public class CurrenciesDAO {
         }
     }
 
-    public int getCurrencyIdOnCode(String code) {
+    public int getCurrencyIdByCode(String code) {
         try (var conn = ConnectionManager.open();
              PreparedStatement preparedStatement = conn.prepareStatement(SELECT_CURRENCY_ON_CODE);
         ) {
@@ -114,19 +104,5 @@ public class CurrenciesDAO {
             System.out.println(e.getMessage());
             throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
         }
-    }
-
-    public static String getCurrencyCodeById(int Id) {
-        try (var conn = ConnectionManager.open();
-             PreparedStatement preparedStatement = conn.prepareStatement(SELECT_CURRENCY_ON_ID);
-        ) {
-            preparedStatement.setInt(1, Id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.getString("Code");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
-        }
-
     }
 }

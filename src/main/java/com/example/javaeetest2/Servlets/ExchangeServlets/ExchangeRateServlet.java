@@ -3,13 +3,8 @@ package com.example.javaeetest2.Servlets.ExchangeServlets;
 import com.example.javaeetest2.DTO.ErrorResponseDTO;
 import com.example.javaeetest2.DTO.ExchangeRateRequestDTO;
 import com.example.javaeetest2.Exceptions.CastomException;
-import com.example.javaeetest2.Service.DataManagementService;
-import com.example.javaeetest2.Service.ValidationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -18,14 +13,10 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 
 @WebServlet(value = "/exchangeRate/*")
-public class ExchangeRateServlet extends HttpServlet {
-    ValidationService validationService = new ValidationService();
-    DataManagementService dataService = new DataManagementService();
+public class ExchangeRateServlet extends baseExchangeServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         resp.setContentType("application/json");
         try {
             validationService.checkPathFromServlet(req.getPathInfo());
@@ -50,8 +41,6 @@ public class ExchangeRateServlet extends HttpServlet {
     }
 
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
 

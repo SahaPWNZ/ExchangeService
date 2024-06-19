@@ -1,23 +1,17 @@
 package com.example.javaeetest2.Servlets.CurrenciesServlets;
 
-import java.io.*;
-import java.sql.SQLException;
-
-import com.example.javaeetest2.DAO.CurrenciesDAO;
 import com.example.javaeetest2.DTO.CurrencyRequestDTO;
 import com.example.javaeetest2.DTO.ErrorResponseDTO;
 import com.example.javaeetest2.Exceptions.CastomException;
-import com.example.javaeetest2.Service.DataManagementService;
-import com.example.javaeetest2.Service.ValidationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/currencies")
-public class CurrenciesServlet extends CurrencyBaseServlet {
+public class CurrenciesServlet extends baseCurrencyServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");

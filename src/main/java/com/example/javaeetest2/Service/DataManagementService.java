@@ -6,27 +6,27 @@ import com.example.javaeetest2.DTO.CurrencyRequestDTO;
 import com.example.javaeetest2.DTO.CurrencyResponseDTO;
 import com.example.javaeetest2.DTO.ExchangeRateRequestDTO;
 import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;
+import com.example.javaeetest2.Exceptions.ConflictException;
 import com.example.javaeetest2.Exceptions.NotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class DataManagementService {
-    private static final CurrenciesDAO curDAO = new CurrenciesDAO();
-    public static final ExchangeRatesDAO ratesDAO = new ExchangeRatesDAO();
+    private final CurrenciesDAO curDAO = new CurrenciesDAO();
+    private final ExchangeRatesDAO ratesDAO = new ExchangeRatesDAO();
     private final ValidationService validationService = new ValidationService();
 
-    public ExchangeRateRequestDTO getDtoByRequest(HttpServletRequest req) {
-        return new ExchangeRateRequestDTO(req.getParameter("baseCurrencyCode"), req.getParameter("targetCurrencyCode"), new BigDecimal(req.getParameter("rate")));
+    public ExchangeRateRequestDTO getDtoByRequest(String baseCode, String targetCode, BigDecimal value) {
+        return new ExchangeRateRequestDTO(baseCode, targetCode, value);
     }
 
-    public static CurrencyResponseDTO getCurrencyOnCode(String code) {
+    public CurrencyResponseDTO getCurrencyOnCode(String code) {
         return curDAO.getCurrencyOnCode(code).orElseThrow(() ->
                 new NotFoundException("Валюты с данным кодом нет"));
     }
 
-    public static ArrayList<CurrencyResponseDTO> getCurrenciesList() {
+    public ArrayList<CurrencyResponseDTO> getCurrenciesList() {
         return curDAO.getCurrenciesList();
     }
 
@@ -53,7 +53,12 @@ public class DataManagementService {
 
     public ExchangeRateResponseDTO insertExchangeRate(ExchangeRateRequestDTO requestDTO) {
         validationService.checkCurrenciesByCodes(requestDTO.getBaseCode(), requestDTO.getTargetCode());
-        validationService.checkExchangeRate(requestDTO.getBaseCode(), requestDTO.getTargetCode());
-        return ratesDAO.insertExchangeRate(requestDTO).orElseThrow();
+        if(validationService.isExchangeRateInDB(requestDTO.getBaseCode(), requestDTO.getTargetCode())){
+            throw new ConflictException("Для данных валют уже есть обменный курс в БД");
+        }
+        else {
+            return ratesDAO.insertExchangeRate(requestDTO).orElseThrow();
+        }
+
     }
 }

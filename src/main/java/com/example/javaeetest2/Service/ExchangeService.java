@@ -2,9 +2,10 @@ package com.example.javaeetest2.Service;
 
 import com.example.javaeetest2.DAO.CurrenciesDAO;
 import com.example.javaeetest2.DAO.ExchangeRatesDAO;
+import com.example.javaeetest2.DTO.ExchangeRateRequestDTO;
 import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;
-import com.example.javaeetest2.DTO.ExchangeRateWithAmountRequestDTO;
 import com.example.javaeetest2.DTO.ExchangeRateWithAmountResponceDTO;
+import com.example.javaeetest2.Exceptions.NotFoundException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,31 +16,27 @@ public class ExchangeService {
     private final BigDecimal amount;
 
     private final CurrenciesDAO curDAO = new CurrenciesDAO();
-
-    public ExchangeService(ExchangeRateWithAmountRequestDTO exchangeDTO) {
-
-        this.baseCurrencyCode = exchangeDTO.getBaseCurrencyCode();
-        this.targetCurrencyCode = exchangeDTO.getTargetCurrencyCode();
-        this.amount = exchangeDTO.getAmount();
+    private final ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
+    private final ValidationService validationService = new ValidationService();
+    public ExchangeService(ExchangeRateRequestDTO exchangeDTO) {
+        this.baseCurrencyCode = exchangeDTO.getBaseCode();
+        this.targetCurrencyCode = exchangeDTO.getTargetCode();
+        this.amount = exchangeDTO.getRate();
     }
 
-    public boolean isExchangeRateInDB() {
-        ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
-        return exchangeRatesDAO.isExchangeRateOnCodes(baseCurrencyCode, targetCurrencyCode);
+    private boolean isExchangeRateInDB() {
+        return validationService.isExchangeRateInDB(baseCurrencyCode,targetCurrencyCode);
     }
 
-    public boolean isBackExchangeRateInDB() {
-        ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
-        return exchangeRatesDAO.isExchangeRateOnCodes(targetCurrencyCode, baseCurrencyCode);
+    private boolean isBackExchangeRateInDB() {
+        return validationService.isExchangeRateInDB(targetCurrencyCode, baseCurrencyCode);
     }
 
-    public boolean isUSDExchangeRate() {
-        ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
-        return exchangeRatesDAO.isExchangeRateOnCodes("USD", baseCurrencyCode) && exchangeRatesDAO.isExchangeRateOnCodes("USD", targetCurrencyCode);
+    private boolean isUSDExchangeRate() {
+        return validationService.isExchangeRateInDB("USD", baseCurrencyCode) && validationService.isExchangeRateInDB("USD", targetCurrencyCode);
     }
 
-    public ExchangeRateWithAmountResponceDTO getResponceDTOonRate() {
-        ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
+    private ExchangeRateWithAmountResponceDTO getResponceDTOonRate() {
         BigDecimal convertedAmount = amount.multiply(exchangeRatesDAO.getRateOnCodes(baseCurrencyCode, targetCurrencyCode));
         ExchangeRateResponseDTO exchangeRateResponseDTO = exchangeRatesDAO.getExchangeRateOnCodes(baseCurrencyCode, targetCurrencyCode).orElseThrow();
         return new ExchangeRateWithAmountResponceDTO(
@@ -50,27 +47,24 @@ public class ExchangeService {
                 convertedAmount);
     }
 
-    public ExchangeRateWithAmountResponceDTO getResponceDTOonBackRate() {
-        ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
+    private ExchangeRateWithAmountResponceDTO getResponceDTOonBackRate() {
         BigDecimal convertedAmount = amount.divide(exchangeRatesDAO.getRateOnCodes(targetCurrencyCode, baseCurrencyCode), 3, RoundingMode.HALF_UP);
         return new ExchangeRateWithAmountResponceDTO(
                 curDAO.getCurrencyOnCode(baseCurrencyCode).get(),
                 curDAO.getCurrencyOnCode(targetCurrencyCode).get(),
-                convertedAmount.divide(amount, 3, RoundingMode.HALF_UP),
+                convertedAmount.divide(amount, 6, RoundingMode.HALF_UP),
                 amount,
                 convertedAmount);
     }
 
     public ExchangeRateWithAmountResponceDTO getResponceDTOonUSDRate() {
-        ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
         BigDecimal rateBaseOnTarget =
-                exchangeRatesDAO.getRateOnCodes("USD", baseCurrencyCode)
-                        .divide(exchangeRatesDAO.getRateOnCodes("USD", targetCurrencyCode), 3, RoundingMode.HALF_UP);
+                exchangeRatesDAO.getRateOnCodes("USD", targetCurrencyCode)
+                        .divide(exchangeRatesDAO.getRateOnCodes("USD", baseCurrencyCode), 3, RoundingMode.HALF_UP);
         BigDecimal convertedAmount = amount.multiply(rateBaseOnTarget);
-        ExchangeRateResponseDTO exchangeRateResponseDTO = exchangeRatesDAO.getExchangeRateOnCodes(baseCurrencyCode, targetCurrencyCode).orElseThrow();
         return new ExchangeRateWithAmountResponceDTO(
-                exchangeRateResponseDTO.getCurrencyBase(),
-                exchangeRateResponseDTO.getCurrencyTarget(),
+                curDAO.getCurrencyOnCode(baseCurrencyCode).get(),
+                curDAO.getCurrencyOnCode(targetCurrencyCode).get(),
                 rateBaseOnTarget,
                 amount,
                 convertedAmount);
@@ -84,7 +78,7 @@ public class ExchangeService {
         } else if (isUSDExchangeRate()) {
             return getResponceDTOonUSDRate();
         } else {
-            return null;
+            throw new NotFoundException("Для данных валют нет возможных курсов обмена");
         }
     }
 

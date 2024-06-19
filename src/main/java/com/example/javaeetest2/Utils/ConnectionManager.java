@@ -1,9 +1,7 @@
 package com.example.javaeetest2.Utils;
-import com.example.javaeetest2.Exceptions.CastomSQLException;
-import jakarta.servlet.ServletContext;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.example.javaeetest2.Exceptions.CastomSQLException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,6 +11,7 @@ public class ConnectionManager {
         loadDriver();
     }
     private ConnectionManager() {
+
     }
     public static Connection open() {
         try {
