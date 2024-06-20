@@ -1,11 +1,12 @@
 package com.example.javaeetest2.DAO;
 
 import com.example.javaeetest2.DTO.ExchangeRateRequestDTO;
-import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;;
+import com.example.javaeetest2.DTO.ExchangeRateResponseDTO;
 import com.example.javaeetest2.Exceptions.CastomSQLException;
 import com.example.javaeetest2.Exceptions.ConflictException;
 import com.example.javaeetest2.Exceptions.InvalidDataException;
 import com.example.javaeetest2.Utils.ConnectionManager;
+import org.sqlite.SQLiteErrorCode;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -80,7 +81,7 @@ public class ExchangeRatesDAO {
             return getExchangeRateOnCodes(exchangeRateRequestDTO.getBaseCode(),
                     exchangeRateRequestDTO.getTargetCode());
         } catch (SQLException e) {
-            if (e.getErrorCode() == 19){
+            if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code){
                throw new ConflictException("Введённый курс валют уже есть в БД!");
             }
             else {

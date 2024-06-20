@@ -3,7 +3,6 @@ package com.example.javaeetest2.Service;
 import com.example.javaeetest2.DAO.CurrenciesDAO;
 import com.example.javaeetest2.DAO.ExchangeRatesDAO;
 import com.example.javaeetest2.DTO.CurrencyRequestDTO;
-import com.example.javaeetest2.Exceptions.ConflictException;
 import com.example.javaeetest2.Exceptions.InvalidDataException;
 import com.example.javaeetest2.Exceptions.NotFoundException;
 
@@ -51,7 +50,7 @@ public class ValidationService {
     }
     public void isValidRate(String rateValue) {
         try {
-            BigDecimal bigDecimalValue = BigDecimal.valueOf(Double.parseDouble(rateValue));
+            BigDecimal.valueOf(Double.parseDouble(rateValue));
         } catch (Exception e) {
             throw new InvalidDataException("Неверное поле формы");
         }

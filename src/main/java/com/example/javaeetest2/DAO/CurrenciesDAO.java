@@ -5,6 +5,7 @@ import com.example.javaeetest2.DTO.CurrencyResponseDTO;
 import com.example.javaeetest2.Exceptions.CastomSQLException;
 import com.example.javaeetest2.Exceptions.ConflictException;
 import com.example.javaeetest2.Utils.ConnectionManager;
+import org.sqlite.SQLiteErrorCode;
 import org.sqlite.SQLiteException;
 
 import java.sql.PreparedStatement;
@@ -73,7 +74,7 @@ public class CurrenciesDAO {
             return getCurrencyOnCode(curDTO.getCode());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            if (e.getErrorCode() == 19){
+            if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code){
                 throw new ConflictException("Валюта с заданным кодом уже есть в БД");
             }
             else {

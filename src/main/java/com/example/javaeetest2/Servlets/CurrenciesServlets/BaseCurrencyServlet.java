@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServlet;
 public abstract class BaseCurrencyServlet extends HttpServlet {
     static final  ObjectMapper objectMapper = new ObjectMapper();
     final  DataManagementService dataService = new DataManagementService();
-    final  ValidationService validationService = new ValidationService();
     static {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }

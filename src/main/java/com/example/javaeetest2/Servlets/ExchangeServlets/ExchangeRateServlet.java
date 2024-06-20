@@ -9,22 +9,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 
 @WebServlet(value = "/exchangeRate/*")
 public class ExchangeRateServlet extends BaseExchangeServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            validationService.checkPathFromServlet(req.getPathInfo());
             String currencyBaseCode = req.getPathInfo().substring(1, 4);
             String currencyTargetCode = req.getPathInfo().substring(4, 7);
-            PrintWriter writer = resp.getWriter();
-            writer.println(objectMapper.writeValueAsString(dataService.getExchangeRateByCodes(currencyBaseCode, currencyTargetCode)));
-
+            resp.getWriter().println(objectMapper.writeValueAsString(dataService.getExchangeRateByCodes(currencyBaseCode, currencyTargetCode)));
         } catch (CastomException e) {
             resp.setStatus(e.getCODE_OF_EXCEPTION());
             resp.getWriter().println(objectMapper.writeValueAsString(new ErrorResponseDTO(e.getMessage())));
@@ -40,18 +35,13 @@ public class ExchangeRateServlet extends BaseExchangeServlet {
         }
     }
 
-    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        PrintWriter writer = resp.getWriter();
-
+    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            validationService.checkPathFromServlet(req.getPathInfo());
-            validationService.isValidRate(req.getParameter("rate"));
             ExchangeRateRequestDTO exchangeRequestDTO = new ExchangeRateRequestDTO(
                     req.getPathInfo().substring(1, 4),
                     req.getPathInfo().substring(4, 7),
                     new BigDecimal(req.getParameter("rate")));
-            writer.println(objectMapper.writeValueAsString(dataService.updateRate(exchangeRequestDTO)));
+            resp.getWriter().println(objectMapper.writeValueAsString(dataService.updateRate(exchangeRequestDTO)));
         } catch (CastomException e) {
             resp.setStatus(e.getCODE_OF_EXCEPTION());
             resp.getWriter().println(objectMapper.writeValueAsString(new ErrorResponseDTO(e.getMessage())));
