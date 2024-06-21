@@ -1,7 +1,6 @@
 package com.example.javaeetest2.Servlets.CurrenciesServlets;
 
 import com.example.javaeetest2.Service.DataManagementService;
-import com.example.javaeetest2.Service.ValidationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.servlet.annotation.WebServlet;

@@ -16,7 +16,7 @@ public class ConnectionManager {
     public static Connection open() {
         try {
 
-            return DriverManager.getConnection("jdbc:sqlite:C:\\Users\\User\\IdeaProjects\\JavaEETest2\\src\\main\\resources\\new.db"); //:resource:new.db("")
+            return DriverManager.getConnection("jdbc:sqlite::resource:new.db"); //C:\Users\User\IdeaProjects\JavaEETest2\src\main\resources\new(ломаная таблица).db
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");

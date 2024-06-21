@@ -17,7 +17,6 @@ public class ExchangeService {
 
     private final CurrenciesDAO curDAO = new CurrenciesDAO();
     private final ExchangeRatesDAO exchangeRatesDAO = new ExchangeRatesDAO();
-    private final ValidationService validationService = new ValidationService();
     public ExchangeService(ExchangeRateRequestDTO exchangeDTO) {
         this.baseCurrencyCode = exchangeDTO.getBaseCode();
         this.targetCurrencyCode = exchangeDTO.getTargetCode();
@@ -25,15 +24,15 @@ public class ExchangeService {
     }
 
     private boolean isExchangeRateInDB() {
-        return validationService.isExchangeRateInDB(baseCurrencyCode,targetCurrencyCode);
+        return exchangeRatesDAO.isExchangeRateInDB(baseCurrencyCode,targetCurrencyCode);
     }
 
     private boolean isBackExchangeRateInDB() {
-        return validationService.isExchangeRateInDB(targetCurrencyCode, baseCurrencyCode);
+        return exchangeRatesDAO.isExchangeRateInDB(targetCurrencyCode, baseCurrencyCode);
     }
 
     private boolean isUSDExchangeRate() {
-        return validationService.isExchangeRateInDB("USD", baseCurrencyCode) && validationService.isExchangeRateInDB("USD", targetCurrencyCode);
+        return exchangeRatesDAO.isExchangeRateInDB("USD", baseCurrencyCode) && exchangeRatesDAO.isExchangeRateInDB("USD", targetCurrencyCode);
     }
 
     private ExchangeRateWithAmountResponceDTO getResponceDTOonRate() {

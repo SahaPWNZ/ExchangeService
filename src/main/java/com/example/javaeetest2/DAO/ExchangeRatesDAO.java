@@ -73,7 +73,6 @@ public class ExchangeRatesDAO {
     public Optional<ExchangeRateResponseDTO> insertExchangeRate(ExchangeRateRequestDTO exchangeRateRequestDTO) {
         try (var conn = ConnectionManager.open();
              PreparedStatement preparedStatement = conn.prepareStatement(INSERT_EXCHANGE_RATE)) {
-
             preparedStatement.setBigDecimal(1, exchangeRateRequestDTO.getRate());
             preparedStatement.setInt(2, curDAO.getCurrencyIdByCode(exchangeRateRequestDTO.getBaseCode()));
             preparedStatement.setInt(3, curDAO.getCurrencyIdByCode(exchangeRateRequestDTO.getTargetCode()));
@@ -118,6 +117,9 @@ public class ExchangeRatesDAO {
             System.out.println(e.getMessage());
             throw new CastomSQLException("Ошибка при обработке запроса или при подключении к БД");
         }
+    }
+    public boolean isExchangeRateInDB(String baseCode, String targetCode){
+        return getExchangeRateOnCodes(baseCode, targetCode).orElse(null) != null;
     }
 
 }

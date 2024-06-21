@@ -35,12 +35,10 @@ public class DataManagementService {
     }
 
     public ExchangeRateResponseDTO getExchangeRateByCodes(String baseCode, String targetCode) {
-        validationService.checkCurrenciesByCodes(baseCode, targetCode);
         return ratesDAO.getExchangeRateOnCodes(baseCode, targetCode).orElseThrow(() -> new NotFoundException("Курса обмена в бд для данных валют нет"));
     }
 
     public ExchangeRateResponseDTO updateRate(ExchangeRateRequestDTO requestDTO) {
-        validationService.checkCurrenciesByCodes(requestDTO.getBaseCode(), requestDTO.getTargetCode());
         ratesDAO.getExchangeRateOnCodes(requestDTO.getBaseCode(), requestDTO.getTargetCode())
                 .orElseThrow(() -> new NotFoundException("Курса обмена в бд для данных валют нет"));
         return ratesDAO.updateRate(requestDTO);

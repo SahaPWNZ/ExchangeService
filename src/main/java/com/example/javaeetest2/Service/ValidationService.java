@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 
 public class ValidationService {
     private final CurrenciesDAO curDAO = new CurrenciesDAO();
-    private final ExchangeRatesDAO ratesDAO = new ExchangeRatesDAO();
 
     public void isValidCode(String code) {
         if (code.length() != 3) {
@@ -25,14 +24,16 @@ public class ValidationService {
 
     public void isValidCurrencyDTO(CurrencyRequestDTO curDTO) {
         isValidCode(curDTO.getCode());
-        if (curDTO.getFullName() == null || curDTO.getFullName().isEmpty() || curDTO.getSign() == null || curDTO.getSign().isEmpty()) {
-            throw new InvalidDataException("Отсутствует нужное поле формы");
+        if (curDTO.getFullName() == null || curDTO.getFullName().isEmpty()){
+            throw new InvalidDataException("Отсутствует нужное поле формы (FullName)");
+        } else if (curDTO.getSign() == null || curDTO.getSign().isEmpty()) {
+            throw new InvalidDataException("Отсутствует нужное поле формы (Sign)");
         }
     }
 
     public void checkCurrenciesByCodes(String baseCode, String targetCode){
-        curDAO.getCurrencyOnCode(baseCode).orElseThrow(() -> new NotFoundException("Одного из курса валют нет"));
-        curDAO.getCurrencyOnCode(targetCode).orElseThrow(() -> new NotFoundException("Одного из курса валют нет"));
+        curDAO.getCurrencyOnCode(baseCode).orElseThrow(() -> new NotFoundException("Одной из валют нет в БД"));
+        curDAO.getCurrencyOnCode(targetCode).orElseThrow(() -> new NotFoundException("Одной из валют нет в БД"));
     }
 
 
@@ -50,17 +51,12 @@ public class ValidationService {
     }
     public void isValidRate(String rateValue) {
         try {
-            BigDecimal.valueOf(Double.parseDouble(rateValue));
-        } catch (Exception e) {
+            BigDecimal rate = new BigDecimal(rateValue);
+            if (rate.compareTo(BigDecimal.ZERO) <= 0){
+                throw new InvalidDataException("Неверное поле формы (курс не может быть меньше либо равен нулю)");
+            }
+        } catch (NumberFormatException e) {
             throw new InvalidDataException("Неверное поле формы");
         }
     }
-    public boolean isExchangeRateInDB(String baseCode, String targetCode){
-        return ratesDAO.getExchangeRateOnCodes(baseCode, targetCode).orElse(null) != null;
-    }
-
-
-
-
-
 }
