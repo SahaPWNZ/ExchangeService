@@ -1,4 +1,4 @@
-![Uploading photo_2024-06-26_15-28-20.jpg…](C:\Users\User\Desktop\photo_2024-06-26_15-28-20.jpg)
+![Uploading photo_2024-06-26_15-28-20.jpg…](src/main/java/com/example/javaeetest2/Utils/Asserts/photo_2024-06-26_15-28-20.jpg)
 
 # Currency Exchange REST API Project
 
@@ -21,13 +21,24 @@
 
 ## Установка
 
-1. Скачайте код из репозитория.
-2. Запустите npm install.
-3. Запустите npm start.
+### Требования
++ Java 22+
++ Apache Maven
++ Tomcat 10
++ Intellij IDEA
 
-## Использование
+### Запуск проекта локально
 
-## API features
+1. Клонировать репозиторий и открыть проект в Intellij IDEA
+   ```
+   git clone https://github.com/SahaPWNZ/ExchangeService
+   ```
+2. Далее в Intellij IDEA выбрать select Run -> Edit Configuration.
+3. Нажимаем на Add new configuration, там выбираем tomcat и его настраиваем
+4. Далее там же в настройках tomcat нажимаем на "fix" и добавляем "war exploded"
+5. Запускаем проект
+## Использование API
+
 
 ### Currencies
 
@@ -233,9 +244,3 @@ specified in the query address. Example of response:
   "amount": 100.00,
   "convertedAmount": 2224.00
 }
-```
-
-* Откройте веб-браузер.
-* Перейдите на адрес http://localhost:3000.
-
-## Пример
