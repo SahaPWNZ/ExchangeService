@@ -53,13 +53,13 @@ Returns list of all currencies. Example of response:
 [
   {
     "id": 0,
-    "name": "United States dollar",
+    "fullName": "United States dollar",
     "code": "USD",
     "sign": "$"
   },
   {
     "id": 1,
-    "name": "Euro",
+    "fullName": "Euro",
     "code": "EUR",
     "sign": "€"
   },
@@ -75,7 +75,7 @@ Returns particular currency. The currency code is specified in the query address
 [
   {
     "id": 0,
-    "name": "United States dollar",
+    "fullName": "United States dollar",
     "code": "USD",
     "sign": "$"
   }
@@ -85,13 +85,13 @@ Returns particular currency. The currency code is specified in the query address
 #### POST `/currencies`
 
 Adding a new currency to the database. Data is passed in the body of request in the x-www-form-urlencoded. The form
-fields are `name`, `code`, `symbol`. Example of response (inserted record):
+fields are `code`, `FullName`, `Sign`. Example of response (inserted record):
 
 ```json
 [
   {
     "id": 2,
-    "name": "Czech Koruna",
+    "fullName": "Czech Koruna",
     "code": "CZK",
     "sign": "Kč"
   }
@@ -110,13 +110,13 @@ Returns list of all exchange rates. Example of response:
     "id": 0,
     "baseCurrency": {
       "id": 0,
-      "name": "United States dollar",
+      "fullName": "United States dollar",
       "code": "USD",
       "sign": "$"
     },
     "targetCurrency": {
       "id": 1,
-      "name": "Euro",
+      "fullName": "Euro",
       "code": "EUR",
       "sign": "€"
     },
@@ -126,13 +126,13 @@ Returns list of all exchange rates. Example of response:
     "id": 1,
     "baseCurrency": {
       "id": 0,
-      "name": "United States dollar",
+      "fullName": "United States dollar",
       "code": "USD",
       "sign": "$"
     },
     "targetCurrency": {
       "id": 2,
-      "name": "Czech Koruna",
+      "fullName": "Czech Koruna",
       "code": "CZK",
       "sign": "Kč"
     },
@@ -153,13 +153,13 @@ fields are `baseCurrencyCode`, `targetCurrencyCode`, `rate`. Example of response
     "id": 2,
     "baseCurrency": {
       "id": 1,
-      "name": "Euro",
+      "fullName": "Euro",
       "code": "EUR",
       "sign": "€"
     },
     "targetCurrency": {
       "id": 2,
-      "name": "Czech Koruna",
+      "fullName": "Czech Koruna",
       "code": "CZK",
       "sign": "Kč"
     },
@@ -179,13 +179,13 @@ Example of response:
     "id": 0,
     "baseCurrency": {
       "id": 0,
-      "name": "United States dollar",
+      "fullName": "United States dollar",
       "code": "USD",
       "sign": "$"
     },
     "targetCurrency": {
       "id": 1,
-      "name": "Euro",
+      "fullName": "Euro",
       "code": "EUR",
       "sign": "€"
     },
@@ -207,13 +207,13 @@ Example of response (inserted record):
     "id": 1,
     "baseCurrency": {
       "id": 0,
-      "name": "United States dollar",
+      "fullName": "United States dollar",
       "code": "USD",
       "sign": "$"
     },
     "targetCurrency": {
       "id": 2,
-      "name": "Czech Koruna",
+      "fullName": "Czech Koruna",
       "code": "CZK",
       "sign": "Kč"
     },
@@ -233,13 +233,13 @@ specified in the query address. Example of response:
 {
   "baseCurrency": {
     "id": 0,
-    "name": "United States dollar",
+    "fullName": "United States dollar",
     "code": "USD",
     "sign": "$"
   },
   "targetCurrency": {
     "id": 2,
-    "name": "Czech Koruna",
+    "fullName": "Czech Koruna",
     "code": "CZK",
     "sign": "Kč"
   },
