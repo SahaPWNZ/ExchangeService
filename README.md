@@ -22,7 +22,7 @@
 ## Установка
 
 ### Требования
-+ Java 22+
++ Java 21+
 + Apache Maven
 + Tomcat 10
 + Intellij IDEA
@@ -38,7 +38,10 @@
 4. Далее там же в настройках tomcat нажимаем на "fix" и добавляем "war exploded"
 5. Запускаем проект
 ## Использование API
+Деплой проекта: http://158.160.84.126:8080/currency-api/
 
+Для проверки была созданна [коллекция в Postman](src/main/java/com/example/javaeetest2/Utils/Asserts/Exchange-api.postman_collection.json) 
+со всеми запросами
 
 ### Currencies
 
@@ -244,3 +247,4 @@ specified in the query address. Example of response:
   "amount": 100.00,
   "convertedAmount": 2224.00
 }
+

@@ -12,26 +12,31 @@ public class ValidationService {
     private final CurrenciesDAO curDAO = new CurrenciesDAO();
 
     public void isValidCode(String code) {
-        if (code.length() != 3) {
-            throw new InvalidDataException("Неверно введён код валюты (не 3 буквы)");
-        }
-        for (int i = 0; i < code.length(); i++) {
-            if (!Character.isLetter(code.charAt(i))) {
-                throw new InvalidDataException("Неверно введён код валюты (должен состоять только из букв)");
+        if (code != null) {
+            if (code.length() != 3) {
+                throw new InvalidDataException("Неверно введён код валюты (не 3 буквы)");
             }
+            for (int i = 0; i < code.length(); i++) {
+                if (!Character.isLetter(code.charAt(i))) {
+                    throw new InvalidDataException("Неверно введён код валюты (должен состоять только из букв)");
+                }
+            }
+        }
+        else{
+            throw new InvalidDataException("Неверно введён код валюты (не 3 буквы)");
         }
     }
 
     public void isValidCurrencyDTO(CurrencyRequestDTO curDTO) {
         isValidCode(curDTO.getCode());
-        if (curDTO.getFullName() == null || curDTO.getFullName().isEmpty()){
+        if (curDTO.getFullName() == null || curDTO.getFullName().isEmpty()) {
             throw new InvalidDataException("Отсутствует нужное поле формы (FullName)");
         } else if (curDTO.getSign() == null || curDTO.getSign().isEmpty()) {
             throw new InvalidDataException("Отсутствует нужное поле формы (Sign)");
         }
     }
 
-    public void checkCurrenciesByCodes(String baseCode, String targetCode){
+    public void checkCurrenciesByCodes(String baseCode, String targetCode) {
         curDAO.getCurrencyOnCode(baseCode).orElseThrow(() -> new NotFoundException("Одной из валют нет в БД"));
         curDAO.getCurrencyOnCode(targetCode).orElseThrow(() -> new NotFoundException("Одной из валют нет в БД"));
     }
@@ -49,10 +54,11 @@ public class ValidationService {
         isValidCode(currencyBaseCode);
         isValidCode(currencyTargetCode);
     }
+
     public void isValidRate(String rateValue) {
         try {
             BigDecimal rate = new BigDecimal(rateValue);
-            if (rate.compareTo(BigDecimal.ZERO) <= 0){
+            if (rate.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new InvalidDataException("Неверное поле формы (курс не может быть меньше либо равен нулю)");
             }
         } catch (NumberFormatException e) {

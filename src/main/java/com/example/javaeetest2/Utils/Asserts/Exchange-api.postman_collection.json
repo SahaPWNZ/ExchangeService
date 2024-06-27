@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "47ee1ee4-45f0-44e0-b41f-469282ecc0bb",
+		"name": "Exchange-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34728080"
+	},
+	"item": [
+		{
+			"name": "currency/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://158.160.84.126:8080/currency-api/currency/BYN"
+			},
+			"response": []
+		},
+		{
+			"name": "currencies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://158.160.84.126:8080/currency-api/currencies"
+			},
+			"response": []
+		},
+		{
+			"name": "exchangeRates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://158.160.84.126:8080/currency-api/exchangeRates"
+			},
+			"response": []
+		},
+		{
+			"name": "exchangeRate/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://158.160.84.126:8080/currency-api/exchangeRate/BYNUSD"
+			},
+			"response": []
+		},
+		{
+			"name": "exchangeRate/",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://158.160.84.126:8080/currency-api/exchangeRate/BYNUSD?rate=0.3105",
+					"protocol": "http",
+					"host": [
+						"158",
+						"160",
+						"84",
+						"126"
+					],
+					"port": "8080",
+					"path": [
+						"currency-api",
+						"exchangeRate",
+						"BYNUSD"
+					],
+					"query": [
+						{
+							"key": "rate",
+							"value": "0.3105"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "currencies",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://158.160.84.126:8080/currency-api/currencies?Code=AUD&FullName=Australian dollar&Sign=AE",
+					"protocol": "http",
+					"host": [
+						"158",
+						"160",
+						"84",
+						"126"
+					],
+					"port": "8080",
+					"path": [
+						"currency-api",
+						"currencies"
+					],
+					"query": [
+						{
+							"key": "Code",
+							"value": "AUD"
+						},
+						{
+							"key": "FullName",
+							"value": "Australian dollar"
+						},
+						{
+							"key": "Sign",
+							"value": "AE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exchangeRates",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://158.160.84.126:8080/currency-api/exchangeRates?baseCurrencyCode=AUD&targetCurrencyCode=USD&rate=1.053",
+					"protocol": "http",
+					"host": [
+						"158",
+						"160",
+						"84",
+						"126"
+					],
+					"port": "8080",
+					"path": [
+						"currency-api",
+						"exchangeRates"
+					],
+					"query": [
+						{
+							"key": "baseCurrencyCode",
+							"value": "AUD"
+						},
+						{
+							"key": "targetCurrencyCode",
+							"value": "USD"
+						},
+						{
+							"key": "rate",
+							"value": "1.053"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exchange",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://158.160.84.126:8080/currency-api/exchange?from=BYN&to=USD&amount=100",
+					"protocol": "http",
+					"host": [
+						"158",
+						"160",
+						"84",
+						"126"
+					],
+					"port": "8080",
+					"path": [
+						"currency-api",
+						"exchange"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "BYN"
+						},
+						{
+							"key": "to",
+							"value": "USD"
+						},
+						{
+							"key": "amount",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
