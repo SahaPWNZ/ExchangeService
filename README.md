@@ -38,7 +38,7 @@
 4. Далее там же в настройках tomcat нажимаем на "fix" и добавляем "war exploded"
 5. Запускаем проект
 ## Использование API
-Деплой проекта: http://158.160.84.126:8080/currency-api/
+Деплой проекта: http://158.160.78.11:8080/currency-api/
 
 Для проверки была созданна [коллекция в Postman](src/main/java/com/example/javaeetest2/Utils/Asserts/Exchange-api.postman_collection.json) 
 со всеми запросами
@@ -47,7 +47,7 @@
 
 #### GET `/currencies`
 
-Returns list of all currencies. Example of response:
+Возвращает список всех валют. Пример ответа::
 
 ```json
 [
@@ -69,7 +69,7 @@ Returns list of all currencies. Example of response:
 
 #### GET `/currency/USD`
 
-Returns particular currency. The currency code is specified in the query address Example of response:
+Возвращает определенную валюту. Код валюты указан в адресе запроса. Пример ответа:
 
 ```json
 [
@@ -84,8 +84,8 @@ Returns particular currency. The currency code is specified in the query address
 
 #### POST `/currencies`
 
-Adding a new currency to the database. Data is passed in the body of request in the x-www-form-urlencoded. The form
-fields are `code`, `FullName`, `Sign`. Example of response (inserted record):
+обавление новой валюты в базу данных. Данные передаются в теле запроса в формате x-www-form-urlencoded. Форма
+поля: «code», «fullName», «sign». Пример ответа (вставленная запись):
 
 ```json
 [
@@ -102,7 +102,7 @@ fields are `code`, `FullName`, `Sign`. Example of response (inserted record):
 
 #### GET `/exchangeRates`
 
-Returns list of all exchange rates. Example of response:
+Возвращает список всех обменных курсов. Пример ответа:
 
 ```json
 [
@@ -144,8 +144,8 @@ Returns list of all exchange rates. Example of response:
 
 #### POST `/exchangeRates`
 
-Adding a new exchange rate to the database. Data is passed in the body of request in the x-www-form-urlencoded. The form
-fields are `baseCurrencyCode`, `targetCurrencyCode`, `rate`. Example of response (inserted record):
+Добавление нового курса валют в базу данных. Данные передаются в теле запроса в формате x-www-form-urlencoded. Форма
+поля `baseCurrencyCode`, `targetCurrencyCode`, `rate`.Пример ответа (вставленная запись):
 
 ```json
 [
@@ -170,8 +170,8 @@ fields are `baseCurrencyCode`, `targetCurrencyCode`, `rate`. Example of response
 
 #### GET `/exchangeRate/USDEUR`
 
-Returns a particular exchange rate. The currency pair is specified by consecutive currency codes in the query address.
-Example of response:
+Возвращает определенный обменный курс. Валютная пара указывается последовательными кодами валют в адресе запроса.
+Пример ответа:
 
 ```json
 [
@@ -196,10 +196,10 @@ Example of response:
 
 #### PATCH `/exchangeRate/USDEUR`
 
-Updates the existing exchange rate in the database. The currency pair is specified by consecutive currency codes in the
-query address. The data is passed in the body of the request in the x-www-form-urlencoded. The only form field
-is `rate`.
-Example of response (inserted record):
+Обновляет существующий обменный курс в базе данных. Валютная пара указывается последовательными кодами валют в
+адрес запроса. Данные передаются в теле запроса в формате x-www-form-urlencoded. Единственное поле формы
+это `rate`.
+Пример ответа (вставленная запись):
 
 ```json
 [
@@ -226,8 +226,8 @@ Example of response (inserted record):
 
 #### GET `/exchange?from=BASE_CURRENCY_CODE&to=TARGET_CURRENCY_CODE&amount=$AMOUNT`
 
-Calculate the conversion of a particular amount of money from one currency to another. The currency pair and amount is
-specified in the query address. Example of response:
+Рассчитывает конвертацию определенной суммы денег из одной валюты в другую. Валютная пара и сумма
+указывается в адресе запроса. Пример ответа:
 
 ```json
 {
