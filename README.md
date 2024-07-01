@@ -1,4 +1,4 @@
-![Uploading photo_2024-06-26_15-28-20.jpg…](src/main/java/com/example/javaeetest2/Utils/Asserts/photo_2024-06-26_15-28-20.jpg)
+![Uploading photo_2024-06-26_15-28-20.jpg…](src/main/java/com/example/javaeetest2/utils/Asserts/photo_2024-06-26_15-28-20.jpg)
 
 # Currency Exchange REST API Project
 
@@ -40,7 +40,7 @@
 ## Использование API
 Деплой проекта: http://158.160.78.11:8080/currency-api/
 
-Для проверки была созданна [коллекция в Postman](src/main/java/com/example/javaeetest2/Utils/Asserts/Exchange-api.postman_collection.json) 
+Для проверки была созданна [коллекция в Postman](src/main/java/com/example/javaeetest2/utils/Asserts/Exchange-api.postman_collection.json) 
 со всеми запросами
 
 ### Currencies
