@@ -11,7 +11,6 @@ public class ConnectionManager {
         loadDriver();
     }
     private ConnectionManager() {
-
     }
     public static Connection open() {
         try {
@@ -24,6 +23,7 @@ public class ConnectionManager {
     }
     static void loadDriver() {
         try {
+//            System.out.println(ConnectionManager.class.getClassLoader().getResource("new.db"));
             Class.forName("org.sqlite.JDBC");
         } catch (Exception e) {
             throw new RuntimeException(e);
