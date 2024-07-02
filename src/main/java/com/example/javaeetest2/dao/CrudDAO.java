@@ -1,8 +1,8 @@
 package com.example.javaeetest2.dao;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface CrudDAO <T>{
-    List<T> findAll();
+    ArrayList<T> findAll();
     T save (T model);
 }

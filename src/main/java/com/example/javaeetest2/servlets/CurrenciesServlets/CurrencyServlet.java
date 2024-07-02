@@ -15,14 +15,11 @@ public class CurrencyServlet extends BaseCurrencyServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             String code = request.getPathInfo().substring(1);
-            String json = objectMapper.writeValueAsString(dataService.getCurrencyOnCode(code));
-            response.getWriter().println(json);
+            response.getWriter().println(objectMapper.writeValueAsString(dataService.getCurrencyOnCode(code)));
+
         } catch (CastomException e) {
             response.setStatus(e.getCODE_OF_EXCEPTION());
             response.getWriter().println(objectMapper.writeValueAsString(new ErrorResponseDTO(e.getMessage())));
         }
-    }
-    public void destroy() {
-        super.destroy();
     }
 }

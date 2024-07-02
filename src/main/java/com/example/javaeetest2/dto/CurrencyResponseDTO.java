@@ -1,13 +1,14 @@
 package com.example.javaeetest2.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CurrencyResponseDTO {
-    private final int id;
-    private final String code;
-    private final String fullName;
-    private final String sign;
+    private  Long id;
+    private  String code;
+    private String fullName;
+    private  String sign;
 }

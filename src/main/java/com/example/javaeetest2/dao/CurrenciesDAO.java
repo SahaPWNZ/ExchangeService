@@ -6,6 +6,7 @@ import com.example.javaeetest2.exceptions.DatabaseException;
 import com.example.javaeetest2.exceptions.EntityExistException;
 import com.example.javaeetest2.utils.ConnectionManager;
 import org.sqlite.SQLiteErrorCode;
+import com.example.javaeetest2.model.Currency;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,28 +15,28 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-public class CurrenciesDAO {
+public class CurrenciesDAO implements CrudDAO<Currency>{
     private static final String SELECT_ALL_CURRENCIES = "SELECT * FROM Currencies";
     private static final String INSERT_CURRENCY = "INSERT INTO Currencies   (Code, FullName, Sign) VALUES (?,?,?)";
     private static final String SELECT_CURRENCY_ON_CODE = "SELECT * FROM Currencies WHERE Code = ?";
     private static final String SELECT_CURRENCY_ON_ID = "SELECT * FROM Currencies WHERE Id = ?";
 
-    private CurrencyResponseDTO getDtoByResultSet(ResultSet resultSet) throws SQLException {
-        return new CurrencyResponseDTO(
-                resultSet.getInt("id"),
+    private Currency getCurrency(ResultSet resultSet) throws SQLException {
+        return new com.example.javaeetest2.model.Currency(
+                resultSet.getLong("id"),
                 resultSet.getString("Code"),
                 resultSet.getString("FullName"),
                 resultSet.getString("Sign"));
     }
 
-    public Optional<CurrencyResponseDTO> findByCode(String code) throws DatabaseException {
+    public Optional<Currency> findByCode(String code) throws DatabaseException {
         try (var conn = ConnectionManager.open();
              PreparedStatement preparedStatement = conn.prepareStatement(SELECT_CURRENCY_ON_CODE);
         ) {
             preparedStatement.setString(1, code);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(getDtoByResultSet(resultSet));
+                return Optional.of(getCurrency(resultSet));
             } else {
                 return Optional.empty();
             }
@@ -46,8 +47,8 @@ public class CurrenciesDAO {
 
     }
 
-    public ArrayList<CurrencyResponseDTO> findAll() throws DatabaseException {
-        ArrayList<CurrencyResponseDTO> AllCurrencies = new ArrayList<>();
+    public ArrayList<Currency> findAll() throws DatabaseException {
+        ArrayList<Currency> AllCurrencies = new ArrayList<>();
         try (var conn = ConnectionManager.open();
              PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_CURRENCIES);
         ) {
@@ -62,34 +63,34 @@ public class CurrenciesDAO {
         }
     }
 
-    public Optional<CurrencyResponseDTO> save(CurrencyRequestDTO curDTO) {
+    public Optional<Currency> save(Currency entity) {
         try (var conn = ConnectionManager.open();
              PreparedStatement preparedStatement = conn.prepareStatement(INSERT_CURRENCY)) {
-            preparedStatement.setString(1, curDTO.getCode());
-            preparedStatement.setString(2, curDTO.getFullName());
-            preparedStatement.setString(3, curDTO.getSign());
+            preparedStatement.setString(1, entity.getCode());
+            preparedStatement.setString(2, entity.getFullName());
+            preparedStatement.setString(3, entity.getSign());
             preparedStatement.executeUpdate();
             System.out.println("Валюта добавлена");
-            return findByCode(curDTO.getCode());
+            return findByCode(entity.getCode());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code){
+            if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code) {
                 throw new EntityExistException("Валюта с заданным кодом уже есть в БД");
-            }
-            else {
+            } else {
                 throw new DatabaseException("Ошибка при обработке запроса или при подключении к БД");
-            }}
+            }
+        }
     }
 
 
-    public Optional<CurrencyResponseDTO> findById(int id) {
+    public Optional<Currency> findById(int id) {
         try (var conn = ConnectionManager.open();
              PreparedStatement preparedStatement = conn.prepareStatement(SELECT_CURRENCY_ON_ID);
         ) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(getDtoByResultSet(resultSet));
+                return Optional.of(getCurrency(resultSet));
             } else {
                 return Optional.empty();
             }

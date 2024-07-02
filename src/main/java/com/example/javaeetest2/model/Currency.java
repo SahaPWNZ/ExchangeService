@@ -1,5 +1,6 @@
 package com.example.javaeetest2.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -7,8 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Currency {
-    private long id;
+    private Long id;
     private String code;
     private String fullName;
     private String sign;
