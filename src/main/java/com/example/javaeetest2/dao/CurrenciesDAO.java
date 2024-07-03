@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-public class CurrenciesDAO implements CrudDAO<Currency>{
+public class CurrenciesDAO {
     private static final String SELECT_ALL_CURRENCIES = "SELECT * FROM Currencies";
     private static final String INSERT_CURRENCY = "INSERT INTO Currencies   (Code, FullName, Sign) VALUES (?,?,?)";
     private static final String SELECT_CURRENCY_ON_CODE = "SELECT * FROM Currencies WHERE Code = ?";
@@ -47,21 +47,21 @@ public class CurrenciesDAO implements CrudDAO<Currency>{
 
     }
 
-    public ArrayList<Currency> findAll() throws DatabaseException {
-        ArrayList<Currency> AllCurrencies = new ArrayList<>();
-        try (var conn = ConnectionManager.open();
-             PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_CURRENCIES);
-        ) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                AllCurrencies.add(getDtoByResultSet(resultSet));
-            }
-            return AllCurrencies;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            throw new DatabaseException("Ошибка при обработке запроса или при подключении к БД");
-        }
-    }
+//    public ArrayList<Currency> findAll() throws DatabaseException {
+//        ArrayList<Currency> AllCurrencies = new ArrayList<>();
+//        try (var conn = ConnectionManager.open();
+//             PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_CURRENCIES);
+//        ) {
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                AllCurrencies.add(getDtoByResultSet(resultSet));
+//            }
+//            return AllCurrencies;
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//            throw new DatabaseException("Ошибка при обработке запроса или при подключении к БД");
+//        }
+//    }
 
     public Optional<Currency> save(Currency entity) {
         try (var conn = ConnectionManager.open();
