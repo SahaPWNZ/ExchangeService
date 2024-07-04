@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class ValidationUtils {
     private final CurrenciesDAO curDAO = new CurrenciesDAO();
 
-    public void isValidCode(String code) {
+    public static void isValidCode(String code) {
         if (code != null) {
             if (code.length() != 3) {
                 throw new InvalidParameterException("Неверно введён код валюты (не 3 буквы)");
@@ -26,7 +26,7 @@ public class ValidationUtils {
         }
     }
 
-    public void isValidCurrencyDTO(CurrencyRequestDTO curDTO) {
+    public static void isValidCurrencyDTO(CurrencyRequestDTO curDTO) {
         isValidCode(curDTO.getCode());
         if (curDTO.getFullName() == null || curDTO.getFullName().isEmpty()) {
             throw new InvalidParameterException("Отсутствует нужное поле формы (FullName)");
