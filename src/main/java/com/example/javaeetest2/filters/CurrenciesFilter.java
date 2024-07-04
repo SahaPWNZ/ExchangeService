@@ -1,8 +1,9 @@
-package com.example.javaeetest2.servlets.Filters;
+package com.example.javaeetest2.filters;
 
+import com.example.javaeetest2.dto.CurrencyRequestDTO;
 import com.example.javaeetest2.dto.ErrorResponseDTO;
 import com.example.javaeetest2.exceptions.CastomException;
-import com.example.javaeetest2.service.ValidationService;
+import com.example.javaeetest2.utils.ValidationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -11,9 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter("/exchangeRate/*")
-public class ExchangeRateFilter implements Filter {
-    ValidationService validationService = new ValidationService();
+@WebFilter("/currencies")
+public class CurrenciesFilter implements Filter {
+    ValidationUtils validationUtils = new ValidationUtils();
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -23,16 +24,17 @@ public class ExchangeRateFilter implements Filter {
         resp.setContentType("application/json; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
         try {
-            validationService.checkPathFromServlet(req.getPathInfo());
-            if (req.getMethod().equalsIgnoreCase("GET")) {
+            if (req.getMethod().equalsIgnoreCase("POST")) {
+                validationUtils.isValidCurrencyDTO(new CurrencyRequestDTO(req.getParameter("Code"),
+                        req.getParameter("FullName"), req.getParameter("Sign")));
                 filterChain.doFilter(req, resp);
-            } else if (req.getMethod().equalsIgnoreCase("PATCH")) {
-                validationService.isValidRate(req.getParameter("rate"));
+            } else if (req.getMethod().equalsIgnoreCase("GET")) {
                 filterChain.doFilter(req, resp);
             }
         } catch (CastomException e) {
             resp.setStatus(e.getCODE_OF_EXCEPTION());
             resp.getWriter().println(objectMapper.writeValueAsString(new ErrorResponseDTO(e.getMessage())));
         }
+
     }
 }

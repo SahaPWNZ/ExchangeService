@@ -1,15 +1,18 @@
 package com.example.javaeetest2.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
+
 @Getter
+@AllArgsConstructor
 @RequiredArgsConstructor
-public class ExchangeRateWithAmountResponceDTO{
-    private final CurrencyResponseDTO CurrencyBase;
-    private final CurrencyResponseDTO CurrencyTarget;
-    private final BigDecimal rate;
-    private final BigDecimal amount;
-    private final BigDecimal convertedAmount;
+public class ExchangeRateWithAmountResponceDTO {
+    private CurrencyResponseDTO CurrencyBase;
+    private CurrencyResponseDTO CurrencyTarget;
+    private BigDecimal rate;
+    private BigDecimal amount;
+    private BigDecimal convertedAmount;
 }

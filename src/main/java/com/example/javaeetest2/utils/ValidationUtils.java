@@ -1,4 +1,4 @@
-package com.example.javaeetest2.service;
+package com.example.javaeetest2.utils;
 
 import com.example.javaeetest2.dao.CurrenciesDAO;
 import com.example.javaeetest2.dto.CurrencyRequestDTO;
@@ -7,7 +7,7 @@ import com.example.javaeetest2.exceptions.NotFoundException;
 
 import java.math.BigDecimal;
 
-public class ValidationService {
+public class ValidationUtils {
     private final CurrenciesDAO curDAO = new CurrenciesDAO();
 
     public void isValidCode(String code) {

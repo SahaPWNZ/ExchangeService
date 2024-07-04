@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CurrencyResponseDTO {
-    private  Long id;
-    private  String code;
+    private Long id;
+    private String code;
     private String fullName;
-    private  String sign;
+    private String sign;
 }

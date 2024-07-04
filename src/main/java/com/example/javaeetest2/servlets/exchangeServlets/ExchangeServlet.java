@@ -1,0 +1,33 @@
+package com.example.javaeetest2.servlets.exchangeServlets;
+
+import com.example.javaeetest2.dto.ErrorResponseDTO;
+import com.example.javaeetest2.dto.ExchangeRateReqDTO;
+import com.example.javaeetest2.exceptions.CastomException;
+import com.example.javaeetest2.service.ExchangeService;
+import com.example.javaeetest2.servlets.BaseServlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+
+@WebServlet (value = "/exchange")
+public class ExchangeServlet extends BaseServlet {
+    ExchangeService service = new ExchangeService();
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            ExchangeRateReqDTO requestWithAmountDTO = new ExchangeRateReqDTO(
+                    req.getParameter("from"),
+                    req.getParameter("to"),
+                    new BigDecimal(req.getParameter("amount")));
+            resp.getWriter().println(objectMapper.writeValueAsString(service.Exchange(requestWithAmountDTO)));
+        }
+        catch (CastomException e){
+            resp.setStatus(e.getCODE_OF_EXCEPTION());
+            resp.getWriter().println(objectMapper.writeValueAsString(new ErrorResponseDTO(e.getMessage())));
+        }
+    }
+}

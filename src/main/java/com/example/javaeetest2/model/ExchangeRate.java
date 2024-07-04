@@ -1,16 +1,19 @@
 package com.example.javaeetest2.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class ExchangeRate {
-    private long id;
+    private Long id;
+    @NonNull
+    private Currency baseCurrency;
+    @NonNull
+    private Currency targetCurrency;
+    @NonNull
     private BigDecimal rate;
-    private long baseCurrencyId;
-    private long targetCurrencyId;
 }

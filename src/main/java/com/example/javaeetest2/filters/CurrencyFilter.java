@@ -1,8 +1,8 @@
-package com.example.javaeetest2.servlets.Filters;
+package com.example.javaeetest2.filters;
 
 import com.example.javaeetest2.dto.ErrorResponseDTO;
 import com.example.javaeetest2.exceptions.CastomException;
-import com.example.javaeetest2.service.ValidationService;
+import com.example.javaeetest2.utils.ValidationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -11,10 +11,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter("/exchangeRates")
-public class ExchangeRatesFilter implements Filter {
-    ValidationService validationService = new ValidationService();
+@WebFilter("/currency/*")
+public class CurrencyFilter implements jakarta.servlet.Filter {
+    ValidationUtils validationUtils = new ValidationUtils();
     ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
@@ -22,15 +23,8 @@ public class ExchangeRatesFilter implements Filter {
         resp.setContentType("application/json; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
         try {
-            if (req.getMethod().equalsIgnoreCase("POST")){
-                validationService.isValidCode(req.getParameter("baseCurrencyCode"));
-                validationService.isValidCode(req.getParameter("targetCurrencyCode"));
-                validationService.isValidRate(req.getParameter("rate"));
-                filterChain.doFilter(req,resp);
-            }
-            else {
-                filterChain.doFilter(req,resp);
-            }
+            validationUtils.isValidCode(req.getPathInfo().substring(1));
+            filterChain.doFilter(req, resp);
         } catch (CastomException e) {
             resp.setStatus(e.getCODE_OF_EXCEPTION());
             resp.getWriter().println(objectMapper.writeValueAsString(new ErrorResponseDTO(e.getMessage())));
