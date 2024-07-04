@@ -12,9 +12,10 @@ import java.io.IOException;
 public class CurrencyServlet extends BaseServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            String code = request.getPathInfo().substring(1);
-            ValidationUtils.isValidCode(code);
+        String code = request.getPathInfo().substring(1);
 
-            response.getWriter().println(objectMapper.writeValueAsString(dataService.getCurrencyOnCode(code)));
+        ValidationUtils.isValidCode(code);
+
+        objectMapper.writeValue(response.getWriter(), dataService.getCurrencyOnCode(code));
     }
 }

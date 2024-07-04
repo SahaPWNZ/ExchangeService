@@ -26,6 +26,6 @@ public class ExchangeServlet extends BaseServlet {
                     req.getParameter("to"),
                     new BigDecimal(req.getParameter("amount")));
 
-            resp.getWriter().println(objectMapper.writeValueAsString(service.Exchange(requestWithAmountDTO)));
+objectMapper.writeValue(resp.getWriter(), service.Exchange(requestWithAmountDTO));
     }
 }

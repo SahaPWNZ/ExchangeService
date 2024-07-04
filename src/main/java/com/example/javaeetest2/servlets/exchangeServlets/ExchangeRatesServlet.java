@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class ExchangeRatesServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.getWriter().write(objectMapper.writeValueAsString(dataService.getExchangeRatesList()));
+        objectMapper.writeValue(resp.getWriter(), dataService.getExchangeRatesList());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ExchangeRatesServlet extends BaseServlet {
                 req.getParameter("targetCurrencyCode"),
                 new BigDecimal(req.getParameter("rate")));
 
-        resp.getWriter().println(objectMapper.writeValueAsString(dataService.insertExchangeRate(exchangeRequestDTO)));
+        objectMapper.writeValue(resp.getWriter(), dataService.insertExchangeRate(exchangeRequestDTO));
         resp.setStatus(HttpServletResponse.SC_CREATED);
     }
 }
