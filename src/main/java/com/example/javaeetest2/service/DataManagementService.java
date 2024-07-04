@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class DataManagementService {
     private final CurrenciesDAO curDAO = new CurrenciesDAO();
     private final ExchangeRatesDAO ratesDAO = new ExchangeRatesDAO();
-    private final ValidationUtils validationUtils = new ValidationUtils();
 
     public CurrencyResponseDTO getCurrencyOnCode(String code) {
         var currency = curDAO.findByCode(code).orElseThrow(() ->
@@ -55,7 +54,7 @@ public class DataManagementService {
     }
 
     public ExchangeRateResponseDTO insertExchangeRate(ExchangeRateReqDTO requestDTO) {
-        validationUtils.checkCurrenciesByCodes(requestDTO.getBaseCode(), requestDTO.getTargetCode());
+        ValidationUtils.checkCurrenciesByCodes(requestDTO.getBaseCode(), requestDTO.getTargetCode());
         var exchangeRate = new ExchangeRate(
                 curDAO.findByCode(requestDTO.getBaseCode()).get(),
                 curDAO.findByCode(requestDTO.getTargetCode()).get(),

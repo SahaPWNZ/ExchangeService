@@ -8,7 +8,6 @@ import com.example.javaeetest2.exceptions.NotFoundException;
 import java.math.BigDecimal;
 
 public class ValidationUtils {
-    private final CurrenciesDAO curDAO = new CurrenciesDAO();
 
     public static void isValidCode(String code) {
         if (code != null) {
@@ -20,8 +19,7 @@ public class ValidationUtils {
                     throw new InvalidParameterException("Неверно введён код валюты (должен состоять только из букв)");
                 }
             }
-        }
-        else{
+        } else {
             throw new InvalidParameterException("Неверно введён код валюты (не 3 буквы)");
         }
     }
@@ -35,13 +33,14 @@ public class ValidationUtils {
         }
     }
 
-    public void checkCurrenciesByCodes(String baseCode, String targetCode) {
+    public static void checkCurrenciesByCodes(String baseCode, String targetCode) {
+        CurrenciesDAO curDAO = new CurrenciesDAO();
         curDAO.findByCode(baseCode).orElseThrow(() -> new NotFoundException("Одной из валют нет в БД"));
         curDAO.findByCode(targetCode).orElseThrow(() -> new NotFoundException("Одной из валют нет в БД"));
     }
 
 
-    public void checkPathFromServlet(String path) {
+    public static void checkPathFromServlet(String path) {
         if (path.length() >= 8) {
             throw new InvalidParameterException("Неверно введены коды валюты (больше 6 букв)");
         }
@@ -54,7 +53,7 @@ public class ValidationUtils {
         isValidCode(currencyTargetCode);
     }
 
-    public void isValidRate(String rateValue) {
+    public static void isValidRate(String rateValue) {
         try {
             BigDecimal rate = new BigDecimal(rateValue);
             if (rate.compareTo(BigDecimal.ZERO) <= 0) {
@@ -64,4 +63,11 @@ public class ValidationUtils {
             throw new InvalidParameterException("Неверное поле формы");
         }
     }
+
+    public static void isValidExchangeRateReqDTO(String firstCode, String secondCode, String decimalNumber) {
+        isValidCode(firstCode);
+        isValidCode(secondCode);
+        isValidRate(decimalNumber);
+    }
+
 }
