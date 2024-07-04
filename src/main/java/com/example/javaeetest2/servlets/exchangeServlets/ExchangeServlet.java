@@ -4,7 +4,6 @@ import com.example.javaeetest2.dto.ExchangeRateReqDTO;
 import com.example.javaeetest2.service.ExchangeService;
 import com.example.javaeetest2.servlets.BaseServlet;
 import com.example.javaeetest2.utils.ValidationUtils;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
 public class ExchangeServlet extends BaseServlet {
     ExchangeService service = new ExchangeService();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
             ValidationUtils.isValidExchangeRateReqDTO(
                     req.getParameter("from"),
                     req.getParameter("to"),
