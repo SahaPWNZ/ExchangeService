@@ -24,7 +24,7 @@ public class ExceptionsHandlingFilter extends HttpFilter {
             super.doFilter(req, res, chain);
         } catch (CastomException e) {
             resp.setStatus(e.getCODE_OF_EXCEPTION());
-            resp.getWriter().println(objectMapper.writeValueAsString(new ErrorResponseDTO(e.getMessage())));
+            objectMapper.writeValue(resp.getWriter(), new ErrorResponseDTO(e.getMessage()));
         }
     }
 }
