@@ -21,7 +21,7 @@ public class ExchangeRateServlet extends BaseServlet {
             String currencyBaseCode = req.getPathInfo().substring(1, 4);
             String currencyTargetCode = req.getPathInfo().substring(4, 7);
 
-            resp.getWriter().println(objectMapper.writeValueAsString(dataService.getExchangeRateByCodes(currencyBaseCode, currencyTargetCode)));
+            objectMapper.writeValue(resp.getWriter(),dataService.getExchangeRateByCodes(currencyBaseCode, currencyTargetCode) );
     }
 
     @Override
@@ -42,6 +42,6 @@ public class ExchangeRateServlet extends BaseServlet {
                     req.getPathInfo().substring(4, 7),
                     new BigDecimal(req.getParameter("rate")));
 
-            resp.getWriter().println(objectMapper.writeValueAsString(dataService.updateRate(exchangeRequestDTO)));
+            objectMapper.writeValue(resp.getWriter(), dataService.updateRate(exchangeRequestDTO));
     }
 }

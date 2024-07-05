@@ -12,5 +12,4 @@ public abstract class BaseServlet extends HttpServlet {
     static {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
-
 }

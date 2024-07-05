@@ -13,19 +13,19 @@ import java.io.IOException;
 public class CurrenciesServlet extends BaseServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            response.getWriter().println(objectMapper.writeValueAsString(dataService.getCurrenciesList()));
+        objectMapper.writeValue(response.getWriter(), dataService.getCurrenciesList());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            CurrencyRequestDTO curDTO = new CurrencyRequestDTO(
-                    request.getParameter("Code"),
-                    request.getParameter("FullName"),
-                    request.getParameter("Sign"));
+        CurrencyRequestDTO curDTO = new CurrencyRequestDTO(
+                request.getParameter("Code"),
+                request.getParameter("FullName"),
+                request.getParameter("Sign"));
 
-            ValidationUtils.isValidCurrencyDTO(curDTO);
+        ValidationUtils.isValidCurrencyDTO(curDTO);
 
-            response.getWriter().println(objectMapper.writeValueAsString(dataService.insertCurrency(curDTO)));
-            response.setStatus(HttpServletResponse.SC_CREATED);
+        objectMapper.writeValue(response.getWriter(), dataService.insertCurrency(curDTO));
+        response.setStatus(HttpServletResponse.SC_CREATED);
     }
 }
