@@ -1,4 +1,6 @@
-![Uploading photo_2024-06-26_15-28-20.jpg…](src/main/java/com/example/javaeetest2/utils/Asserts/photo_2024-06-26_15-28-20.jpg)
+
+![photo_2024-06-26_15-28-20](https://github.com/SahaPWNZ/ExchangeService/assets/49624232/6d6f2e18-0a85-45dc-bdbe-bd552ee0d4c2)
+
 
 # Currency Exchange REST API Project
 
